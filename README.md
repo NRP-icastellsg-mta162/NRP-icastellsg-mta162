@@ -4,5 +4,5 @@ Proyecto que busca solucionar de forma breve la funcionalidad descrita en clases
 
 ## Authors
 
-- Iván Castells Galindo
-- Miguel Torres Álamo
+- [Iván Castells Galindo](https://github.com/icastellsg)
+- [Miguel Torres Álamo](https://github.com/mta162)
