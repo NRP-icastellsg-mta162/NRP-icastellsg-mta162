@@ -1,0 +1,4 @@
+id,descripcion,dependencias,solicitudes
+R1,Implementar login,,Alice
+R2,Implementar registro,,Bob
+R3,Crear página de perfil,R1.I;R2.E,Alice;Bob

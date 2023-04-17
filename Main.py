@@ -13,7 +13,6 @@ def cargar_requisitos_desde_archivo(archivo, formato):
                 requisito = Requisito(row['id'], row['descripcion'], dependencias)
                 requisitos.append(requisito)
                 ids_requisitos.add(row['id'])
-                solicitudes = row.get('solicitudes', '').split(';')
     else:
         print("Error: Formato de archivo no soportado. Solo se puede trabajar con archivos .csv")
         exit(1)
