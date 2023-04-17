@@ -2,7 +2,7 @@ import csv
 from Stakeholder import Stakeholder
 from Requisito import Requisito
 
-def cargar_requisitos_desde_archivo(archivo, formato):
+def cargar_requisitos_desde_archivo(archivo, formato, stakeholders):
     requisitos = []
     ids_requisitos = set()
     if formato == 'csv':
@@ -13,6 +13,8 @@ def cargar_requisitos_desde_archivo(archivo, formato):
                 requisito = Requisito(row['id'], row['descripcion'], dependencias)
                 requisitos.append(requisito)
                 ids_requisitos.add(row['id'])
+                solicitudes = row.get('solicitudes', '').split(';')
+                asignar_satisfaccion(requisito, solicitudes, stakeholders)
     else:
         print("Error: Formato de archivo no soportado. Solo se puede trabajar con archivos .csv")
         exit(1)
@@ -23,6 +25,16 @@ def cargar_requisitos_desde_archivo(archivo, formato):
             print(f"Error: Dependencias del requisito {requisito.id} no son correctas")
             exit(1)
     return requisitos
+
+def asignar_satisfaccion(requisito, solicitudes, stakeholders):
+    for solicitud in solicitudes:
+        stackeholder = [stakeholder for stakeholder in stakeholders if stakeholder.nombre == solicitud]
+        if len(stackeholder) > 0:
+            importancia = stackeholder[0].importancia
+            requisito.agregar_satisfaccion(importancia)
+        else:
+            print(f"Error: Las solicitudes del requisito {requisito.id} no son correctas")
+            exit(1)
 
 def cargar_stakeholders_desde_archivo(archivo, formato):
     stakeholders = []
@@ -53,8 +65,8 @@ def main():
 
     archivo_requisitos = input("Introduzca el archivo de requisitos (con extensión): ")
     formato_requisitos = archivo_requisitos.split('.')[-1]
-    requisitos = cargar_requisitos_desde_archivo(archivo_requisitos, formato_requisitos)
-    print(f"Se han cargado {len(requisitos)} requisitos: {', '.join([f'{requisito.id}: {requisito.descripcion}' for requisito in requisitos])}")
+    requisitos = cargar_requisitos_desde_archivo(archivo_requisitos, formato_requisitos, stakeholders)
+    print(f"Se han cargado {len(requisitos)} requisitos: {', '.join([f'{requisito.id}: {requisito.descripcion} (sat: {requisito.satisfaccion_total})' for requisito in requisitos])}")
 
 
 if __name__ == "__main__":
