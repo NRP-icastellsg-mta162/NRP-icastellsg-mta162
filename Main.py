@@ -97,9 +97,9 @@ def main():
     formato_requisitos = archivo_requisitos.split('.')[-1]
     requisitos = cargar_requisitos_desde_archivo(archivo_requisitos, formato_requisitos, stakeholders)
 
-    exit = False
+    cerrar_menu = False
 
-    while not exit:
+    while not cerrar_menu:
         print("\nSeleccione una opción:")
         print("1. Mostrar stakeholders recomendados para un nombre concreto")
         print("2. Calcular la planificación de sprints")
