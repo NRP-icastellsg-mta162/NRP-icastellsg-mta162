@@ -1,7 +1,9 @@
 class Stakeholder:
     
-    def __init__(self, nombre, recomendaciones=[]):
+    def __init__(self, nombre, recomendaciones):
         self.nombre = nombre
+        if recomendaciones is None:
+            recomendaciones = []
         self.recomendaciones = recomendaciones
         self.importancia = len(recomendaciones)
 
