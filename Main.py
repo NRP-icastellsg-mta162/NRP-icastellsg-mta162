@@ -56,6 +56,26 @@ def cargar_stakeholders_desde_archivo(archivo, formato):
             exit(1)
     return stakeholders
 
+def planificar_sprints(requisitos, coste_maximo):
+    sprints = []
+    requisitos_pendientes = sorted(requisitos, key=lambda r: r.satisfaccion_total, reverse=True)
+
+    while requisitos_pendientes:
+        sprint = []
+        coste_actual = 0
+
+        for requisito in requisitos_pendientes:
+            if coste_actual + requisito.coste <= coste_maximo:
+                sprint.append(requisito)
+                coste_actual += requisito.coste
+
+        for requisito in sprint:
+            requisitos_pendientes.remove(requisito)
+
+        sprints.append(sprint)
+
+    return sprints
+
 def main():
     
     archivo_stakeholders = input("Introduzca el archivo de stakeholders (con extensión): ")
@@ -68,6 +88,14 @@ def main():
     requisitos = cargar_requisitos_desde_archivo(archivo_requisitos, formato_requisitos, stakeholders)
     print(f"Se han cargado {len(requisitos)} requisitos: {', '.join([f'{requisito.id}: {requisito.descripcion} (sat: {requisito.satisfaccion_total})' for requisito in requisitos])}")
 
+    coste_maximo = int(input("Introduzca el coste máximo por sprint: "))
+    sprints = planificar_sprints(requisitos, coste_maximo)
+
+    print(f"Se han planificado {len(sprints)} sprints:")
+    for i, sprint in enumerate(sprints):
+        print(f"Sprint {i + 1}:")
+        for requisito in sprint:
+            print(f"  - {requisito.id}: {requisito.descripcion} (sat: {requisito.satisfaccion_total}, coste: {requisito.coste})")
 
 if __name__ == "__main__":
     main()
