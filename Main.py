@@ -1,5 +1,29 @@
 import csv
 from Stakeholder import Stakeholder
+from Requisito import Requisito
+
+def cargar_requisitos_desde_archivo(archivo, formato):
+    requisitos = []
+    ids_requisitos = set()
+    if formato == 'csv':
+        with open(archivo, newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                dependencias = row.get('dependencias', '').split(';')
+                requisito = Requisito(row['id'], row['descripcion'], dependencias)
+                requisitos.append(requisito)
+                ids_requisitos.add(row['id'])
+                solicitudes = row.get('solicitudes', '').split(';')
+    else:
+        print("Error: Formato de archivo no soportado. Solo se puede trabajar con archivos .csv")
+        exit(1)
+    
+    for requisito in requisitos:
+      if len(requisito.dependencias[0]) > 0:
+        if not requisito.comprobar_dependencias(ids_requisitos):
+            print(f"Error: Dependencias del requisito {requisito.id} no son correctas")
+            exit(1)
+    return requisitos
 
 def cargar_stakeholders_desde_archivo(archivo, formato):
     stakeholders = []
@@ -27,6 +51,12 @@ def main():
     formato_stakeholders = archivo_stakeholders.split('.')[-1]
     stakeholders = cargar_stakeholders_desde_archivo(archivo_stakeholders, formato_stakeholders)
     print(f"Se han cargado {len(stakeholders)} stakeholders: {', '.join([stakeholder.nombre for stakeholder in stakeholders])}")
+
+    archivo_requisitos = input("Introduzca el archivo de requisitos (con extensión): ")
+    formato_requisitos = archivo_requisitos.split('.')[-1]
+    requisitos = cargar_requisitos_desde_archivo(archivo_requisitos, formato_requisitos)
+    print(f"Se han cargado {len(requisitos)} requisitos: {', '.join([f'{requisito.id}: {requisito.descripcion}' for requisito in requisitos])}")
+
 
 if __name__ == "__main__":
     main()
