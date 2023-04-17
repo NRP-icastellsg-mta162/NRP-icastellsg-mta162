@@ -18,3 +18,6 @@ class Requisito:
         if self.id in dependencias_sin_tipo:
             return False
         return set(dependencias_sin_tipo).issubset(nombres_requisitos)
+    
+    def __str__(self):
+        return f"{self.id}: {self.descripcion} (sat: {self.satisfaccion_total}, coste: {self.coste})"

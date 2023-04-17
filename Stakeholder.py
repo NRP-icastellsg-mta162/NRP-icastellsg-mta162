@@ -15,3 +15,12 @@ class Stakeholder:
         if self.nombre in self.recomendaciones:
             return False
         return set(self.recomendaciones).issubset(nombres_stakeholders)
+    
+    def __str__(self):
+        return f"Stakeholder: {self.nombre}, Recomendaciones: {self.recomendaciones}"
+    
+    def mostrar_recomendaciones(self):
+        print(f"Stakeholders que han recomendado a {self.nombre}:")
+        for recomendacion in self.recomendaciones:
+            print(f"  - {recomendacion}")
+    

@@ -82,6 +82,13 @@ def obtener_stakeholder_por_nombre(array_stakeholders, nombre_buscado):
             return stakeholder
     return None
 
+def mostrar_solucion(sprints):
+    print(f"Se han planificado {len(sprints)} sprints:")
+    for i, sprint in enumerate(sprints):
+        print(f"Sprint {i + 1}:")
+        for requisito in sprint:
+            print(f"  - {requisito}")
+
 def main():
     print(" _   _ ____  ____  ")
     print("| \\ | |  _ \\|  _ \\ ")
@@ -115,19 +122,13 @@ def main():
             if stakeholder is None:
                 print("Error: No se ha encontrado el stakeholder especificado")
             else:
-                print(f"Stakeholders que han recomendado a {nombre_stakeholder}:")
-                for recomendacion in stakeholder.recomendaciones:
-                    print(f"  - {recomendacion}")
+                stakeholder.mostrar_recomendaciones()
         elif option == 2:
             coste_maximo = int(input("Introduzca el coste máximo por sprint: "))
             sprints = planificar_sprints(requisitos, coste_maximo)
-            print(f"Se han planificado {len(sprints)} sprints:")
-            for i, sprint in enumerate(sprints):
-                print(f"Sprint {i + 1}:")
-                for requisito in sprint:
-                    print(f"  - {requisito.id}: {requisito.descripcion} (sat: {requisito.satisfaccion_total}, coste: {requisito.coste})")
+            mostrar_solucion(sprints)
         elif option == 3:
-            exit = True
+            cerrar_menu = True
         else:
             print("Opción inválida")
 
