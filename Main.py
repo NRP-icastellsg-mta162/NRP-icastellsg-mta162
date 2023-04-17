@@ -76,6 +76,12 @@ def planificar_sprints(requisitos, coste_maximo):
 
     return sprints
 
+def obtener_stakeholder_por_nombre(array_stakeholders, nombre_buscado):
+    for stakeholder in array_stakeholders:
+        if stakeholder.nombre == nombre_buscado:
+            return stakeholder
+    return None
+
 def main():
     
     archivo_stakeholders = input("Introduzca el archivo de stakeholders (con extensión): ")
@@ -91,11 +97,21 @@ def main():
     coste_maximo = int(input("Introduzca el coste máximo por sprint: "))
     sprints = planificar_sprints(requisitos, coste_maximo)
 
-    print(f"Se han planificado {len(sprints)} sprints:")
     for i, sprint in enumerate(sprints):
-        print(f"Sprint {i + 1}:")
-        for requisito in sprint:
-            print(f"  - {requisito.id}: {requisito.descripcion} (sat: {requisito.satisfaccion_total}, coste: {requisito.coste})")
+        print(f"Se han planificado {len(sprints)} sprints:")
+        for i, sprint in enumerate(sprints):
+            print(f"Sprint {i + 1}:")
+            for requisito in sprint:
+                print(f"  - {requisito.id}: {requisito.descripcion} (sat: {requisito.satisfaccion_total}, coste: {requisito.coste})")
+
+    nombre_stakeholder = input("Introduzca el nombre del stakeholder para saber quién lo ha recomendado: ")
+    stakeholder = obtener_stakeholder_por_nombre(stakeholders, nombre_stakeholder)
+    if stakeholder is None:
+        print("Error: No se ha encontrado el stakeholder especificado")
+    else:
+        print(f"Stakeholders que han recomendado a {nombre_stakeholder}:")
+        for recomendacion in stakeholder.recomendaciones:
+            print(f"  - {recomendacion}")
 
 if __name__ == "__main__":
     main()
