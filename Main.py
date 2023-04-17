@@ -26,16 +26,6 @@ def cargar_requisitos_desde_archivo(archivo, formato, stakeholders):
             exit(1)
     return requisitos
 
-def asignar_satisfaccion(requisito, solicitudes, stakeholders):
-    for solicitud in solicitudes:
-        stackeholder = [stakeholder for stakeholder in stakeholders if stakeholder.nombre == solicitud]
-        if len(stackeholder) > 0:
-            importancia = stackeholder[0].importancia
-            requisito.agregar_satisfaccion(importancia)
-        else:
-            print(f"Error: Las solicitudes del requisito {requisito.id} no son correctas")
-            exit(1)
-
 def cargar_stakeholders_desde_archivo(archivo, formato):
     stakeholders = []
     nombres_stakeholders = set()
@@ -55,6 +45,16 @@ def cargar_stakeholders_desde_archivo(archivo, formato):
             print(f"Error: Recomendaciones del stakeholder {stakeholder.nombre} no son correctas")
             exit(1)
     return stakeholders
+
+def asignar_satisfaccion(requisito, solicitudes, stakeholders):
+    for solicitud in solicitudes:
+        stackeholder = [stakeholder for stakeholder in stakeholders if stakeholder.nombre == solicitud]
+        if len(stackeholder) > 0:
+            importancia = stackeholder[0].importancia
+            requisito.agregar_satisfaccion(importancia)
+        else:
+            print(f"Error: Las solicitudes del requisito {requisito.id} no son correctas")
+            exit(1)
 
 def planificar_sprints(requisitos, coste_maximo):
     sprints = []
@@ -83,35 +83,53 @@ def obtener_stakeholder_por_nombre(array_stakeholders, nombre_buscado):
     return None
 
 def main():
-    
+    print(" _   _ ____  ____  ")
+    print("| \\ | |  _ \\|  _ \\ ")
+    print("|  \\| | |_) | |_) |")
+    print("| |\\  |  _ <|  __/")
+    print("|_| \\_|_| \\_\\_|   \n")
+
     archivo_stakeholders = input("Introduzca el archivo de stakeholders (con extensión): ")
     formato_stakeholders = archivo_stakeholders.split('.')[-1]
     stakeholders = cargar_stakeholders_desde_archivo(archivo_stakeholders, formato_stakeholders)
-    print(f"Se han cargado {len(stakeholders)} stakeholders: {', '.join([stakeholder.nombre for stakeholder in stakeholders])}")
-
+    
     archivo_requisitos = input("Introduzca el archivo de requisitos (con extensión): ")
     formato_requisitos = archivo_requisitos.split('.')[-1]
     requisitos = cargar_requisitos_desde_archivo(archivo_requisitos, formato_requisitos, stakeholders)
-    print(f"Se han cargado {len(requisitos)} requisitos: {', '.join([f'{requisito.id}: {requisito.descripcion} (sat: {requisito.satisfaccion_total})' for requisito in requisitos])}")
 
-    coste_maximo = int(input("Introduzca el coste máximo por sprint: "))
-    sprints = planificar_sprints(requisitos, coste_maximo)
+    exit = False
 
-    for i, sprint in enumerate(sprints):
-        print(f"Se han planificado {len(sprints)} sprints:")
-        for i, sprint in enumerate(sprints):
-            print(f"Sprint {i + 1}:")
-            for requisito in sprint:
-                print(f"  - {requisito.id}: {requisito.descripcion} (sat: {requisito.satisfaccion_total}, coste: {requisito.coste})")
+    while not exit:
+        print("\nSeleccione una opción:")
+        print("1. Mostrar stakeholders recomendados para un nombre concreto")
+        print("2. Calcular la planificación de sprints")
+        print("3. Salir")
 
-    nombre_stakeholder = input("Introduzca el nombre del stakeholder para saber quién lo ha recomendado: ")
-    stakeholder = obtener_stakeholder_por_nombre(stakeholders, nombre_stakeholder)
-    if stakeholder is None:
-        print("Error: No se ha encontrado el stakeholder especificado")
-    else:
-        print(f"Stakeholders que han recomendado a {nombre_stakeholder}:")
-        for recomendacion in stakeholder.recomendaciones:
-            print(f"  - {recomendacion}")
+        option = int(input())
+
+        print()
+
+        if option == 1:
+            nombre_stakeholder = input("Introduzca el nombre del stakeholder para saber quién lo ha recomendado: ")
+            stakeholder = obtener_stakeholder_por_nombre(stakeholders, nombre_stakeholder)
+            if stakeholder is None:
+                print("Error: No se ha encontrado el stakeholder especificado")
+            else:
+                print(f"Stakeholders que han recomendado a {nombre_stakeholder}:")
+                for recomendacion in stakeholder.recomendaciones:
+                    print(f"  - {recomendacion}")
+        elif option == 2:
+            coste_maximo = int(input("Introduzca el coste máximo por sprint: "))
+            sprints = planificar_sprints(requisitos, coste_maximo)
+            print(f"Se han planificado {len(sprints)} sprints:")
+            for i, sprint in enumerate(sprints):
+                print(f"Sprint {i + 1}:")
+                for requisito in sprint:
+                    print(f"  - {requisito.id}: {requisito.descripcion} (sat: {requisito.satisfaccion_total}, coste: {requisito.coste})")
+        elif option == 3:
+            exit = True
+        else:
+            print("Opción inválida")
 
 if __name__ == "__main__":
     main()
