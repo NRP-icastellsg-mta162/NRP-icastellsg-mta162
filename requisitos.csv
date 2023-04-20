@@ -1,4 +1,11 @@
 id,descripcion,dependencias,solicitudes
 R1,Implementar login,,Alice
-R2,Implementar registro,,Bob
-R3,Crear página de perfil,R1.I;R2.E,Alice;Bob
+R2,Implementar registro,R3.J;R1.X,Bob;Alice
+R3,Crear página de perfil,R2.J,Alice;Bob
+R4,Desarrollar funcionalidad de búsqueda,,Charlie
+R5,Optimizar la velocidad de carga de la aplicación,R6.J;R7.X;R8.I,Daniel;Emma
+R6,Implementar caché de datos,R5.J,Daniel
+R7,Comprimir recursos estáticos,,Emma
+R8,Minimizar solicitudes HTTP,,David
+R9,Añadir soporte para múltiples idiomas,,Alice;Bob;Charlie
+R10,Mejorar la usabilidad de la interfaz de usuario,,David;Emma

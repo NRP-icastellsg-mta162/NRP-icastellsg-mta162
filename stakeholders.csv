@@ -1,3 +1,7 @@
 nombre,recomendaciones
-Alice,Bob
+Alice,Bob;Charlie
 Bob,Alice
+Charlie,Daniel;Emma;David
+Daniel,Emma
+Emma,Charlie;Bob
+David,Alice
