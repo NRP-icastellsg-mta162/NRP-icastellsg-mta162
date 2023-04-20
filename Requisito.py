@@ -1,5 +1,8 @@
+from Dependencia import Dependencia
+from typing import List
+
 class Requisito:
-    def __init__(self, id, descripcion, dependencias):
+    def __init__(self, id: str, descripcion: str, dependencias: List[Dependencia]):
         self.id = id
         self.descripcion = descripcion
         if dependencias is None:
@@ -13,11 +16,11 @@ class Requisito:
     def agregar_satisfaccion(self, satisfaccion):
         self.satisfaccion_total += satisfaccion
 
-    def comprobar_dependencias(self, nombres_requisitos):
-        dependencias_sin_tipo = [dependencia.split('.')[0] for dependencia in self.dependencias]
+    def comprobar_dependencias(self, ids_requisitos):
+        dependencias_sin_tipo = [dependencia.id_requisito for dependencia in self.dependencias]
         if self.id in dependencias_sin_tipo:
             return False
-        return set(dependencias_sin_tipo).issubset(nombres_requisitos)
+        return set(dependencias_sin_tipo).issubset(ids_requisitos)
     
     def __str__(self):
         return f"{self.id}: {self.descripcion} (sat: {self.satisfaccion_total}, coste: {self.coste})"

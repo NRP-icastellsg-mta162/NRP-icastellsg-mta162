@@ -1,6 +1,6 @@
 class Stakeholder:
     
-    def __init__(self, nombre, recomendaciones):
+    def __init__(self, nombre: str, recomendaciones):
         self.nombre = nombre
         if recomendaciones is None:
             recomendaciones = []
