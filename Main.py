@@ -39,7 +39,7 @@ def main():
         elif option == 2:
             coste_maximo = int(input("Introduzca el coste máximo por sprint: "))
             if (coste_maximo <= 0):
-                print(f"El coste máximo debe de ser mayor que 0")
+                print("El coste máximo debe de ser mayor que 0")
                 exit(1)
             sprints = nrp.planificar_sprints(requisitos, coste_maximo)
             nrp.mostrar_solucion(sprints)
