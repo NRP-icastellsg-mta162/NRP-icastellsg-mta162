@@ -13,11 +13,7 @@ class NRP:
                 reader = csv.DictReader(csvfile)
                 for row in reader:
                     dependencias_archivo = row.get('dependencias', '').split(';')
-                    dependencias = []
-                    if dependencias_archivo != ['']:
-                        for dependencia in dependencias_archivo:
-                            requisito_tipo = dependencia.split('.')
-                            dependencias.append(Dependencia(requisito_tipo[0], requisito_tipo[1]))
+                    dependencias = self.cargar_dependencias(dependencias_archivo)
                     requisito = Requisito(row['id'], row['descripcion'], dependencias)
                     requisitos.append(requisito)
                     ids_requisitos.add(row['id'])
@@ -33,6 +29,14 @@ class NRP:
                     print(f"Error: Dependencias del requisito {requisito.id} no son correctas")
                     exit(1)
         return requisitos
+    
+    def cargar_dependencias(self, dependencias_archivo):
+        dependencias = []
+        if dependencias_archivo != ['']:
+            for dependencia in dependencias_archivo:
+                requisito_tipo = dependencia.split('.')
+                dependencias.append(Dependencia(requisito_tipo[0], requisito_tipo[1]))
+        return dependencias
 
     def cargar_stakeholders_desde_archivo(self,archivo, formato):
         stakeholders = []
